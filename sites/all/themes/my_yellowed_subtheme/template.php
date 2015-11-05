@@ -75,9 +75,9 @@ function my_yellowed_subtheme_preprocess_page(&$vars) {
   $vars['slide1_des'] = theme_get_setting('slide1_des', 'my_yellowed_subtheme');
   $vars['slide2_des'] = theme_get_setting('slide2_des', 'my_yellowed_subtheme');
   $vars['slide3_des'] = theme_get_setting('slide3_des', 'my_yellowed_subtheme');
-  $vars['img1'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/slide-image-1.jpg';
-  $vars['img2'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/slide-image-2.jpg';
-  $vars['img3'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/slide-image-3.jpg';
+  $vars['img1'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/theater-seats-banner.jpg';
+  $vars['img2'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/beer-me-bw.jpg';
+  $vars['img3'] = base_path() . drupal_get_path('theme', 'my_yellowed_subtheme') . '/images/duck-ramen.jpg';
   $vars['twitter'] = theme_get_setting('twitter', 'my_yellowed_subtheme');
   $vars['facebook'] = theme_get_setting('facebook', 'my_yellowed_subtheme');
   // $vars['googleplus'] = theme_get_setting('googleplus', 'my_yellowed_subtheme');
