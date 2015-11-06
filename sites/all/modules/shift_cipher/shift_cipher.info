@@ -1,0 +1,5 @@
+name = Shift Cipher
+description = Encodes user inputted string
+package = Epicodus
+core = 7.x
+files[] = shift_cipher.module

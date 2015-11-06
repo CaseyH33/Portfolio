@@ -1,0 +1,96 @@
+<?php
+
+function queen_attack_menu() {
+  $items['queen_attack'] = array(
+    'title' => 'Queen Attack',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('queen_attack_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['queen_attack_results_page'] = array(
+    'title' => 'Results',
+    'page callback' => 'queen_attack_results',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function queen_attack_form() {
+  $form['queen_column'] = array(
+    '#title' => 'Queen Column',
+    '#type' => 'textfield',
+    '#description' => t('Please input the column of the queen'),
+    '#element_validate' => array('queen_attack_validate_range'),
+    '#required' => TRUE,
+  );
+  $form['queen_row'] = array(
+    '#title' => 'Queen Row',
+    '#type' => 'textfield',
+    '#description' => t('Please input the row of the queen'),
+    '#element_validate' => array('queen_attack_validate_range'),
+    '#required' => TRUE,
+  );
+  $form['attack_column'] = array(
+    '#title' => 'Attacked Column',
+    '#type' => 'textfield',
+    '#description' => t('Please input the column of the piece to attack'),
+    '#element_validate' => array('queen_attack_validate_range'),
+    '#required' => TRUE,
+  );
+  $form['attack_row'] = array(
+    '#title' => 'Attacked Row',
+    '#type' => 'textfield',
+    '#description' => t('Please input the row of the piece to attack'),
+    '#element_validate' => array('queen_attack_validate_range'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Go',
+    );
+  return $form;
+}
+
+function queen_attack_validate_range($element) {
+    if($element['#value'] < 1 || $element['#value'] > 8) {
+        form_error($element, t('Please enter a coordinate between 1 and 8.'));
+    }
+}
+
+function queen_attack_form_validate($form, &$form_state) {
+    if($form_state['values']['queen_column'] === $form_state['values']['attack_column'] && $form_state['values']['queen_row'] === $form_state['values']['attack_row']) {
+        form_set_error('queen_column', t('Pieces cannot share the same coordinates.  Try again.'));
+        form_set_error('queen_row');
+        form_set_error('attack_column');
+        form_set_error('attack_row');
+    }
+}
+
+function queen_attack_form_submit($form, &$form_state) {
+  $queen_column = $form_state['values']['queen_column'];
+  $queen_row = $form_state['values']['queen_row'];
+  $attack_column = $form_state['values']['attack_column'];
+  $attack_row = $form_state['values']['attack_row'];
+
+  if(($queen_column === $attack_column) || ($queen_row === $attack_row)) {
+    $result = true;
+  } elseif(abs($queen_column-$attack_column) === abs($queen_row-$attack_row)) {
+    $result = true;
+  } else {
+    $result = false;
+  }
+
+  $_SESSION['queen_attack_output'] = $result;
+  $form_state['redirect'] = 'queen_attack_results_page';
+}
+
+function queen_attack_results() {
+  $result_display = $_SESSION['queen_attack_output'];
+  if($result_display === TRUE) {
+    return '<p>The queen can attack that piece!</p>';
+  } else {
+    return '<p>The queen cannot attack that piece!</p>';
+  }
+}

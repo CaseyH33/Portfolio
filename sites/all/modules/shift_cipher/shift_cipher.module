@@ -1,0 +1,111 @@
+<?php
+
+  function shift_cipher_menu() {
+    $items['shift_cipher'] = array(
+      'title' => 'Shift Cipher',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('shift_cipher_form'),
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+    );
+    $items['encoded_success'] = array(
+      'title' => 'Encoded Phrase',
+      'page callback' => 'encoded_result',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+    return $items;
+  }
+
+  function shift_cipher_form() {
+    $form['shift_value'] = array(
+        '#title' => 'Shift value',
+        '#type' => 'textfield',
+        '#description' => t('Enter the shift value'),
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+    $form['direction'] = array(
+        '#title' => 'Direction',
+        '#type' => 'textfield',
+        '#description' => t('Enter the shift direction'),
+        '#element_validate' => array('shift_cipher_validate_direction'),
+        '#required' => TRUE,
+    );
+    $form['phrase'] = array(
+        '#title' => 'Phrase',
+        '#type' => 'textfield',
+        '#description' => t('Enter the phrase to be encoded'),
+        '#element_validate' => array('shift_cipher_validate_phrase'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Encode',
+    );
+    return $form;
+  }
+
+  function shift_cipher_validate_direction($element) {
+    //Validates that user input left or right for direction, regardless of capitalization
+    $direction_input = strtolower($element['#value']);
+    if(!($direction_input === 'left' || $direction_input === 'right')) {
+      form_error($element, t("Please enter 'left' or 'right'."));
+    }
+  }
+
+  function shift_cipher_validate_phrase($element) {
+    //Validates that users are only able to input letters and punctuation
+    $input_string = strtolower($element['#value']);
+    $input_phrase_array = str_split($input_string);
+    $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    $punctuation = [" ", ".", ",", "!", "?"];
+    foreach($input_phrase_array as $letter) {
+      if(!(in_array($letter, $letters) || in_array($letter, $punctuation))) {
+        form_error($element, t("Please enter only letters, spaces, and punctuation."));
+      }
+    }
+  }
+
+  function shift_cipher_form_submit($form, &$form_state) {
+    //Gets the values from the form
+    $shift_value = $form_state['values']['shift_value'];
+    $direction = strtolower($form_state['values']['direction']);
+    $phrase = str_split(strtolower($form_state['values']['phrase']));
+
+    $output = "";
+    $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+    //Loops through the user inputted string
+    for($i = 0; $i < sizeof($phrase); $i++) {
+      //Checks if current character is a letter
+      if(in_array($phrase[$i], $letters)) {
+        $letter_position = array_search($phrase[$i], $letters);
+        if($direction === "right") {
+          //Finds the shifted letter to the right
+          if(($letter_position + $shift_value) > 25) {
+            $output .= $letters[$letter_position+$shift_value-25];
+          } else {
+            $output .= $letters[$letter_position+$shift_value];
+          }
+        } else {
+          //Finds the shifted letter to the left
+          if(($letter_position - $shift_value) < 0) {
+            $output .= $letters[$letter_position-$shift_value+26];
+          } else {
+            $output .= $letters[$letter_position-$shift_value];
+          }
+        }
+      } else {
+        //Adds the punctuation without shifting
+        $output .= $phrase[$i];
+      }
+    }
+    $_SESSION['output_string'] = $output;
+    $form_state['redirect'] = 'encoded_success';
+  }
+
+  function encoded_result() {
+    $output_string = $_SESSION['output_string'];
+    return "Your encoded string is: $output_string";
+  }

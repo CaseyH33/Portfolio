@@ -2,6 +2,10 @@ body {
   background: url('../images/crinkled-bg.jpg');
 }
 
+a {
+  color: #006AD4;
+}
+
 #socialbar {
   background-color: #006AD4;
 }
@@ -13,4 +17,8 @@ body {
 #contact-block {
   color: black;
   font-weight: 900;
+}
+
+.article-image {
+  height: 100px;
 }
