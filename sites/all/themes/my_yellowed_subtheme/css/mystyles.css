@@ -2,23 +2,39 @@ body {
   background: url('../images/crinkled-bg.jpg');
 }
 
+/*Change link color to blue*/
 a {
   color: #006AD4;
 }
 
-#socialbar {
+/*Change color of header and footer bars to same as link color*/
+#socialbar, #footer {
   background-color: #006AD4;
 }
 
-#footer {
-  background: #006AD4;
-}
-
+/*Change text color of block with contact message*/
 #contact-block {
   color: black;
   font-weight: 900;
 }
 
+/*Change size of profile pic on front page*/
+img.profile-pic {
+  height: 300px;
+  float: right;
+}
+
+/*Resize images in GitHub and Projects pages*/
 .article-image {
   height: 100px;
+}
+
+/*Hide the read more button on the front page about me*/
+ul.inline li {
+  display: none;
+}
+
+/*Hide the authored by line on articles*/
+.submitted {
+  display: none;
 }
