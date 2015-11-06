@@ -38,3 +38,9 @@ ul.inline li {
 .submitted {
   display: none;
 }
+
+/*Float external links to the right*/
+.link-float {
+  margin-left: 1em;
+  float: right;
+}
