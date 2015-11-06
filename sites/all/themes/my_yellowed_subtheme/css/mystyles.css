@@ -1,7 +1,16 @@
+body {
+  background: url('../images/crinkled-bg.jpg');
+}
+
 #socialbar {
   background-color: #006AD4;
 }
 
 #footer {
   background: #006AD4;
+}
+
+#contact-block {
+  color: black;
+  font-weight: 900;
 }
