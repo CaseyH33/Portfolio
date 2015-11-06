@@ -1,0 +1,5 @@
+name = My Ajax Recipe Viewer
+description = Display Recipe Nodes with Ajax.
+package = Epicodus
+core = 7.x
+files[] = recipeviewer.module
